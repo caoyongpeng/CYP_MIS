@@ -74,7 +74,10 @@ class BookView(View):
     """
 
     def get(self, request, pk):
-        book = BookInfo.objects.get(id=pk)
+        try:
+            book = BookInfo.objects.get(id=pk)
+        except BookInfo.DoesNotExist:
+            return JsonResponse({'error':'图书不存在'})
         return JsonResponse({'id': book.id,
                             'btitle': book.btitle,
                             'bread': book.bread,
@@ -82,9 +85,15 @@ class BookView(View):
                             'bcomment': book.bcomment,})
 
     def put(self, request, pk):
+        try:
+            book = BookInfo.objects.get(id=pk)
+        except BookInfo.DoesNotExist:
+            return JsonResponse({'error':'图书不存在'})
+        data_dict = json.loads(request.body.decode())
+        res = BookInfo.objects.filter(id=pk).update(**data_dict)
+        if res == 0:
+            return JsonResponse({'error':'更新失败'})
         book = BookInfo.objects.get(id=pk)
-        book.btitle='解忧杂货铺'
-        book.save()
 
         return JsonResponse({
             'id': book.id,
@@ -96,7 +105,10 @@ class BookView(View):
 
 
     def delete(self, request, pk):
-        book = BookInfo.objects.get(id=pk)
-        book.delete()
+        try:
+            book = BookInfo.objects.get(id=pk)
+        except BookInfo.DoesNotExist:
+            return JsonResponse({'error':'图书不存在'})
+        book.is_delete = True
 
         return JsonResponse({})
