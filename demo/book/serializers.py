@@ -2,10 +2,10 @@ from rest_framework import serializers
 
 from book.models import BookInfo
 
-class HeroSerializers(serializers.Serializer):
-    hname = serializers.CharField(max_length=10)
-    hgender = serializers.IntegerField(read_only=True)
-    hcomment = serializers.CharField()
+# class HeroSerializers(serializers.Serializer):
+#     hname = serializers.CharField(max_length=10)
+#     hgender = serializers.IntegerField(read_only=True)
+#     hcomment = serializers.CharField()
 
 
 
@@ -16,7 +16,7 @@ class BookSerializers(serializers.Serializer):
     bread = serializers.IntegerField(default=0)
     bcomment = serializers.IntegerField(default=0)
     # heros = HeroSerializers(read_only=True,many=True)
-    heros = serializers.StringRelatedField()
+    # heros = serializers.StringRelatedField()
 
     def validate_btitle(self,value):
 
@@ -37,3 +37,9 @@ class BookSerializers(serializers.Serializer):
         book = BookInfo.objects.create(**validated_data)
 
         return book
+
+class HeroSerializers(serializers.Serializer):
+    hname = serializers.CharField(max_length=10)
+    hgender = serializers.IntegerField(read_only=True)
+    hcomment = serializers.CharField()
+    hbook = BookSerializers()

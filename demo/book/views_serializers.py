@@ -2,8 +2,8 @@ import json
 
 from django.http import JsonResponse
 from django.views import View
-from book.serializers import BookSerializers
-from book.models import BookInfo
+from book.serializers import BookSerializers,HeroSerializers
+from book.models import BookInfo, HeroInfo
 
 
 class BooksView(View):
@@ -79,3 +79,11 @@ class BookView(View):
         book.is_delete = True
 
         return JsonResponse({})
+
+class HeroInfoView(View):
+    def get(self,request):
+        heros = HeroInfo.objects.all()
+
+        ser = HeroSerializers(heros,many=True)
+
+        return JsonResponse(ser.data,safe=False)
