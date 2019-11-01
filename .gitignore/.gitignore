@@ -1,0 +1,118 @@
+＃字节编译/优化/ DLL文件
+__pycache__ /
+* .py [ 鳕鱼 ]
+* $ py.class
+
+＃ C扩展
+* .so
+
+＃分销/包装
+。蟒蛇
+建立 /
+开发鸡蛋 /
+dist /
+下载 /
+鸡蛋 /
+.eggs /
+lib /
+lib64 /
+零件 /
+sdist /
+var /
+车轮 /
+共享 / 蟒蛇轮 /
+* .egg-info /
+.installed.cfg
+* .egg
+表现
+
+＃ PyInstaller
+＃   通常这些文件是由python脚本从模板编写的
+＃   在PyInstaller构建exe之前，以便将日期/其他信息注入到其中。
+* .manifest
+* .spec
+
+＃安装程序日志
+pip-log.txt
+pip-delete-this-directory.txt
+
+＃单元测试/覆盖率报告
+htmlcov /
+.tox /
+.nox /
+.coverage
+.coverage。*
+.cache
+鼻子测试
+coverage.xml
+* .cover
+假设 /
+.pytest_cache /
+
+＃翻译
+* .mo
+* .pot
+
+＃ Django的东西：
+* .log
+local_settings.py
+db.sqlite3
+
+＃烧瓶的东西：
+实例 /
+.webassets-cache
+
+＃杂乱的东西：
+.scrapy
+
+＃狮身人面像文档
+docs / _build /
+
+＃ PyBuilder
+目标 /
+
+＃ Jupyter笔记本
+.ipynb_checkpoints
+
+＃ IPython的
+profile_default /
+ipython_config.py
+
+＃ pyenv
+.python版本
+
+＃芹菜节拍时间表文件
+芹菜时间表
+
+＃ SageMath解析文件
+* .sage.py
+
+＃环境
+.env
+.venv
+环保 /
+venv /
+ENV /
+env.bak /
+venv.bak /
+
+＃ Spyder的项目设置
+.spyderproject
+.spyproject
+
+＃绳索项目设置
+.ropeproject
+
+＃ mkdocs文档
+/ 网站
+
+＃ mypy
+.mypy_cache /
+.dmypy.json
+dmypy.json
+
+＃派尔类型检查器
+.pyre /
+
+＃ pycharm
+.idea /
