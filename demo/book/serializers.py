@@ -37,6 +37,13 @@ class BookSerializers(serializers.Serializer):
         book = BookInfo.objects.create(**validated_data)
 
         return book
+    def update(self, instance, validated_data):
+        res = BookInfo.objects.filter(id=instance.id).update(**validated_data)
+        if res == 0:
+            raise serializers.ValidationError('更新失败')
+        book = BookInfo.objects.get(id=instance.id)
+
+        return book
 
 class HeroSerializers(serializers.Serializer):
     hname = serializers.CharField(max_length=10)

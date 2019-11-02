@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.views import View
 from book.serializers import BookSerializers,HeroSerializers
 from book.models import BookInfo, HeroInfo
-
+from book.modelserializers import HeroModelSerializer
 
 class BooksView(View):
     """
@@ -57,18 +57,14 @@ class BookView(View):
         except BookInfo.DoesNotExist:
             return JsonResponse({'error':'图书不存在'})
         data_dict = json.loads(request.body.decode())
-        res = BookInfo.objects.filter(id=pk).update(**data_dict)
-        if res == 0:
+        ser = BookSerializers(book,data=data_dict)
+        ser.is_valid()
+        if ser.errors:
             return JsonResponse({'error':'更新失败'})
-        book = BookInfo.objects.get(id=pk)
+        validated_data = ser.validated_data
+        ser.save()
+        return JsonResponse(ser.data)
 
-        return JsonResponse({
-            'id': book.id,
-            'btitle': book.btitle,
-            'bread': book.bread,
-            'bpub_date': book.bpub_date,
-            'bcomment': book.bcomment,
-        })
 
 
     def delete(self, request, pk):
@@ -84,6 +80,22 @@ class HeroInfoView(View):
     def get(self,request):
         heros = HeroInfo.objects.all()
 
-        ser = HeroSerializers(heros,many=True)
+        ser = HeroModelSerializer(heros,many=True)
 
         return JsonResponse(ser.data,safe=False)
+    def put(self,request,pk):
+
+        try:
+            hero = HeroInfo.objects.get(id=pk)
+        except HeroInfo.DoesNotExist:
+            return JsonResponse({'error':'不存在'})
+        data_dict = json.loads(request.body.decode())
+
+        ser = HeroModelSerializer(hero,data=data_dict)
+
+        ser.is_valid()
+        if ser.errors:
+            return JsonResponse({'error':'更新失败'})
+
+        ser.save()
+        return JsonResponse(ser.data)
