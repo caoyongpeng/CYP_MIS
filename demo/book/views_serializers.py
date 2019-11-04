@@ -5,8 +5,9 @@ from django.views import View
 from book.serializers import BookSerializers,HeroSerializers
 from book.models import BookInfo, HeroInfo
 from book.modelserializers import HeroModelSerializer
-
-class BooksView(View):
+from rest_framework.views import APIView
+from rest_framework.response import Response
+class BooksView(APIView):
     """
         获取所有图书和保存图书
     """
@@ -16,24 +17,21 @@ class BooksView(View):
         books = BookInfo.objects.all()
         # 2、返回图书信息
         ser = BookSerializers(books,many=True)
-        return JsonResponse(ser.data,safe=False)
+        return Response(ser.data)
 
     def post(self, request):
         # 1、获取前端数据
-        data = request.body.decode()
-        data_dict=json.loads(data)
+        data = request.data
         # 2、验证数据
-        ser = BookSerializers(data=data_dict)
+        ser = BookSerializers(data=data)
         ser.is_valid()
         if ser.errors:
-            return JsonResponse({'error':ser.errors})
-        vaildated_data = ser.validated_data
-
+            return Response({'error':ser.errors})
         ser.save()
-        return JsonResponse(ser.data)
+        return Response(ser.data)
 
 
-class BookView(View):
+class BookView(APIView):
     """
         获取单一图书
         更新
@@ -44,26 +42,24 @@ class BookView(View):
         try:
             book = BookInfo.objects.get(id=pk)
         except BookInfo.DoesNotExist:
-            return JsonResponse({'error':'图书不存在'})
-        return JsonResponse({'id': book.id,
-                            'btitle': book.btitle,
-                            'bread': book.bread,
-                            'bpub_date': book.bpub_date,
-                            'bcomment': book.bcomment,})
+            return Response({'error':'图书不存在'})
+        ser = BookSerializers(book)
+
+
 
     def put(self, request, pk):
         try:
             book = BookInfo.objects.get(id=pk)
         except BookInfo.DoesNotExist:
-            return JsonResponse({'error':'图书不存在'})
-        data_dict = json.loads(request.body.decode())
-        ser = BookSerializers(book,data=data_dict)
+            return Response({'error':'图书不存在'})
+        data=request.data
+        ser = BookSerializers(book,data=data)
         ser.is_valid()
         if ser.errors:
-            return JsonResponse({'error':'更新失败'})
+            return Response({'error':'更新失败'})
         validated_data = ser.validated_data
         ser.save()
-        return JsonResponse(ser.data)
+        return Response(ser.data)
 
 
 
@@ -71,10 +67,10 @@ class BookView(View):
         try:
             book = BookInfo.objects.get(id=pk)
         except BookInfo.DoesNotExist:
-            return JsonResponse({'error':'图书不存在'})
+            return Response({'error':'图书不存在'})
         book.is_delete = True
 
-        return JsonResponse({})
+        return Response({})
 
 class HeroInfoView(View):
     def get(self,request):
