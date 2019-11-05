@@ -3,12 +3,14 @@ from rest_framework.response import Response
 from book.modelserializers import HeroModelSerializer
 from book.serializers import BookSerializers
 from book.models import BookInfo,HeroInfo
-
+from django_filters.rest_framework import DjangoFilterBackend
 
 class BooksView(GenericAPIView):
     serializer_class = BookSerializers
 
     queryset = BookInfo.objects.all()
+    filter_backends = [DjangoFilterBackend]
+    filter_fields = ('btitle', 'bread')
     def get(self,request):
         books = self.get_queryset()
         ser = self.get_serializer(books,many=True)

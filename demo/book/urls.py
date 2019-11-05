@@ -1,6 +1,7 @@
 
 from django.conf.urls import url
 from django.contrib import admin
+
 from rest_framework.routers import SimpleRouter
 
 from book import views_serializers
@@ -24,8 +25,8 @@ urlpatterns = [
     # url(r'^books/$',views_apiview.BooksView.as_view()),
     # url(r'^books/(?P<pk>\d+)/$', views_apiview.BookView.as_view()),
     # url(r'^heros/$',views_apiview.HeroView.as_view()),
-    # url(r'^books/$',views_genericapiview.BooksView.as_view()),
-    # url(r'^books/(?P<pk>\d+)/$', views_genericapiview.BookView.as_view()),
+    url(r'^books_gen/$',views_genericapiview.BooksView.as_view()),
+    url(r'^books_gen/(?P<pk>\d+)/$', views_genericapiview.BookView.as_view()),
     # url(r'^books/$',views_modelmixin.BooksView.as_view()),
     # url(r'^books/(?P<pk>\d+)/$', views_modelmixin.BookView.as_view()),
     # url(r'^books/$',views_modelmixinchild.BooksView.as_view()),
